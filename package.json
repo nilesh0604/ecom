@@ -1,0 +1,55 @@
+{
+  "name": "@ecom/monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "E-Commerce Monorepo with Nx",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "nx run web:dev",
+    "dev:web": "nx run web:dev",
+    "dev:api": "nx run api:dev",
+    "dev:all": "nx run-many -t dev --parallel",
+    "build": "nx run-many -t build",
+    "build:web": "nx run web:build",
+    "build:api": "nx run api:build",
+    "build:affected": "nx affected -t build",
+    "test": "nx run-many -t test",
+    "test:affected": "nx affected -t test",
+    "test:web": "nx run web:test",
+    "test:api": "nx run api:test",
+    "lint": "nx run-many -t lint",
+    "lint:affected": "nx affected -t lint",
+    "lint:fix": "nx run-many -t lint:fix",
+    "typecheck": "nx run-many -t typecheck",
+    "format": "nx format:write",
+    "format:check": "nx format:check",
+    "graph": "nx graph",
+    "clean": "nx reset && rm -rf node_modules apps/*/node_modules packages/*/node_modules",
+    "prepare": "husky install",
+    "db:migrate": "nx run api:db:migrate",
+    "db:generate": "nx run api:db:generate",
+    "db:seed": "nx run api:db:seed",
+    "db:studio": "nx run api:db:studio"
+  },
+  "devDependencies": {
+    "@nx/js": "^21.3.2",
+    "@nx/react": "^21.3.2",
+    "@nx/vite": "^21.3.2",
+    "@nx/eslint": "^21.3.2",
+    "@nx/eslint-plugin": "^21.3.2",
+    "husky": "^8.0.0",
+    "lerna": "^8.2.2",
+    "lint-staged": "^15.2.0",
+    "nx": "^21.3.2",
+    "prettier": "^3.7.4",
+    "typescript": "~5.9.3"
+  },
+  "packageManager": "npm@10.8.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,37 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Commit message format validation
+# Enforces conventional commits: type(scope): subject
+
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,72}$'
+
+commit_message=$(cat "$1")
+
+if ! echo "$commit_message" | grep -qE "$commit_regex"; then
+  echo "❌ Invalid commit message format!"
+  echo ""
+  echo "Expected format: type(scope): subject"
+  echo ""
+  echo "Types:"
+  echo "  feat     - A new feature"
+  echo "  fix      - A bug fix"
+  echo "  docs     - Documentation only changes"
+  echo "  style    - Code style changes (formatting, semicolons, etc)"
+  echo "  refactor - Code change that neither fixes a bug nor adds a feature"
+  echo "  perf     - Performance improvement"
+  echo "  test     - Adding or updating tests"
+  echo "  build    - Build system or dependencies"
+  echo "  ci       - CI/CD changes"
+  echo "  chore    - Other changes that don't modify src or test files"
+  echo "  revert   - Revert a previous commit"
+  echo ""
+  echo "Examples:"
+  echo "  feat(cart): add remove item functionality"
+  echo "  fix(auth): resolve login redirect issue"
+  echo "  docs: update README with setup instructions"
+  echo ""
+  exit 1
+fi
+
+echo "✅ Commit message format is valid!"

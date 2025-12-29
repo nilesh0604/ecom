@@ -1,0 +1,65 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src"],
+  "entryPointStrategy": "expand",
+  "out": "./docs",
+  "name": "eCom - E-Commerce Application",
+  "readme": "./README.md",
+  "exclude": [
+    "**/node_modules/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/test/**",
+    "**/*.d.ts"
+  ],
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeNotDocumented": false,
+  "includeVersion": true,
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Components",
+    "Hooks",
+    "Services",
+    "Store",
+    "Context",
+    "Types",
+    "Utilities",
+    "*"
+  ],
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "plugin": [],
+  "theme": "default",
+  "sort": ["alphabetical", "source-order"],
+  "visibilityFilters": {
+    "protected": true,
+    "@internal": false
+  },
+  "searchInComments": true,
+  "cleanOutputDir": true,
+  "skipErrorChecking": true,
+  "tsconfig": "./tsconfig.json",
+  "validation": {
+    "notExported": false,
+    "invalidLink": false,
+    "notDocumented": false
+  },
+  "blockTags": [
+    "@component",
+    "@module",
+    "@typedef",
+    "@param",
+    "@returns",
+    "@example",
+    "@see",
+    "@throws",
+    "@template",
+    "@property",
+    "@interface",
+    "@category"
+  ]
+}

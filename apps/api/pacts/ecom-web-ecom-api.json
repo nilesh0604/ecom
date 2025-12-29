@@ -1,0 +1,3497 @@
+{
+  "consumer": {
+    "name": "ecom-web"
+  },
+  "interactions": [
+    {
+      "description": "a request for non-existent order",
+      "providerStates": [
+        {
+          "name": "order with id 9999 does not exist"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/orders/9999"
+      },
+      "response": {
+        "body": {
+          "error": "Order not found",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 404
+      }
+    },
+    {
+      "description": "a request for non-existent product",
+      "providerStates": [
+        {
+          "name": "product with id 9999 does not exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products/9999"
+      },
+      "response": {
+        "body": {
+          "error": "Product not found",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 404
+      }
+    },
+    {
+      "description": "a request for order tracking",
+      "providerStates": [
+        {
+          "name": "order with id 1 has tracking info"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/orders/1/tracking"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "carrier": "UPS",
+            "estimatedDelivery": "2024-01-05",
+            "events": [
+              {
+                "description": "Package in transit",
+                "location": "New York, NY",
+                "status": "IN_TRANSIT",
+                "timestamp": "2024-01-03T10:30:00.000Z"
+              }
+            ],
+            "orderId": 1,
+            "orderNumber": "ORD-2024-001",
+            "trackingNumber": "1Z999AA10123456784",
+            "trackingUrl": "https://www.ups.com/track?tracknum=1Z999AA10123456784"
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.carrier": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.estimatedDelivery": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.events": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.events[*].description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.events[*].location": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.events[*].status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.events[*].timestamp": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orderId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orderNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.trackingNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.trackingUrl": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request for orders when none exist",
+      "providerStates": [
+        {
+          "name": "user has no orders"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/orders"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "orders": [],
+            "pagination": {
+              "limit": 10,
+              "page": 1,
+              "total": 0,
+              "totalPages": 0
+            }
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.pagination.limit": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.totalPages": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to add item to cart",
+      "providerStates": [
+        {
+          "name": "product is available for purchase"
+        }
+      ],
+      "request": {
+        "body": {
+          "productId": 1,
+          "quantity": 1
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/cart/items"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "id": 1,
+            "itemCount": 1,
+            "items": [
+              {
+                "id": 1,
+                "price": 99.99,
+                "product": {
+                  "id": 1,
+                  "name": "Sample Product",
+                  "price": 99.99
+                },
+                "productId": 1,
+                "quantity": 1
+              }
+            ],
+            "subtotal": 99.99
+          },
+          "message": "Item added to cart",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to add non-existent product",
+      "providerStates": [
+        {
+          "name": "product with id 9999 does not exist for cart"
+        }
+      ],
+      "request": {
+        "body": {
+          "productId": 9999,
+          "quantity": 1
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/cart/items"
+      },
+      "response": {
+        "body": {
+          "error": "Product not found",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 404
+      }
+    },
+    {
+      "description": "a request to cancel an order",
+      "providerStates": [
+        {
+          "name": "order with id 1 is cancellable"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "PUT",
+        "path": "/api/v1/orders/1/cancel"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "id": 1,
+            "orderNumber": "ORD-2024-001",
+            "status": "CANCELLED"
+          },
+          "message": "Order cancelled successfully",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orderNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to cancel shipped order",
+      "providerStates": [
+        {
+          "name": "order with id 2 is already shipped"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "PUT",
+        "path": "/api/v1/orders/2/cancel"
+      },
+      "response": {
+        "body": {
+          "error": "Cannot cancel shipped order",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 400
+      }
+    },
+    {
+      "description": "a request to clear cart",
+      "providerStates": [
+        {
+          "name": "user has items in cart to clear"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "DELETE",
+        "path": "/api/v1/cart"
+      },
+      "response": {
+        "body": {
+          "message": "Cart cleared",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to create an order",
+      "providerStates": [
+        {
+          "name": "user has items in cart and valid addresses"
+        }
+      ],
+      "request": {
+        "body": {
+          "billingAddressId": 1,
+          "notes": "Please leave at door",
+          "paymentDetails": {
+            "cardToken": "tok_visa"
+          },
+          "paymentMethod": "CREDIT_CARD",
+          "shippingAddressId": 1
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/orders"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "id": 1,
+            "items": [
+              {
+                "id": 1,
+                "price": 99.99,
+                "productId": 1,
+                "quantity": 2
+              }
+            ],
+            "orderNumber": "ORD-2024-001",
+            "shippingCost": 9.99,
+            "status": "PENDING",
+            "subtotal": 199.98,
+            "tax": 16,
+            "total": 225.97
+          },
+          "message": "Order created successfully",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orderNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingCost": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.tax": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to create order with empty cart",
+      "providerStates": [
+        {
+          "name": "user cart is empty"
+        }
+      ],
+      "request": {
+        "body": {
+          "billingAddressId": 1,
+          "paymentMethod": "CREDIT_CARD",
+          "shippingAddressId": 1
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/orders"
+      },
+      "response": {
+        "body": {
+          "error": "Cart is empty",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 400
+      }
+    },
+    {
+      "description": "a request to filter products by category",
+      "providerStates": [
+        {
+          "name": "products exist in electronics category"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products",
+        "query": {
+          "category": [
+            "electronics"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "data": {
+            "pagination": {
+              "limit": 10,
+              "page": 1,
+              "total": 50,
+              "totalPages": 5
+            },
+            "products": [
+              {
+                "category": {
+                  "id": 1,
+                  "name": "Electronics",
+                  "slug": "electronics"
+                },
+                "id": 1,
+                "name": "Electronic Product",
+                "price": 199.99
+              }
+            ]
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.pagination.limit": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.totalPages": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.products[*].category.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].category.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].category.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get cart",
+      "providerStates": [
+        {
+          "name": "user has items in cart"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/cart"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "id": 1,
+            "itemCount": 2,
+            "items": [
+              {
+                "id": 1,
+                "price": 99.99,
+                "product": {
+                  "id": 1,
+                  "images": [
+                    {
+                      "id": 1,
+                      "isPrimary": true,
+                      "url": "/uploads/product.jpg"
+                    }
+                  ],
+                  "name": "Sample Product",
+                  "price": 99.99,
+                  "slug": "sample-product",
+                  "stock": 100
+                },
+                "productId": 1,
+                "quantity": 2
+              }
+            ],
+            "subtotal": 199.98,
+            "updatedAt": "2024-01-01T00:00:00.000Z",
+            "userId": 1
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.images": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].product.images[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.images[*].isPrimary": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.images[*].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.stock": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.updatedAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.userId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get current user",
+      "providerStates": [
+        {
+          "name": "user is authenticated"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/auth/me"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "email": "user@example.com",
+            "emailVerified": true,
+            "firstName": "John",
+            "id": 1,
+            "isActive": true,
+            "lastName": "Doe",
+            "role": "USER"
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.emailVerified": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.isActive": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get empty cart",
+      "providerStates": [
+        {
+          "name": "user has empty cart"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/cart"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "id": 1,
+            "itemCount": 0,
+            "items": [],
+            "subtotal": 0,
+            "userId": 1
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.userId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get featured products",
+      "providerStates": [
+        {
+          "name": "featured products exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products/featured"
+      },
+      "response": {
+        "body": {
+          "data": [
+            {
+              "id": 1,
+              "isFeatured": true,
+              "name": "Featured Product",
+              "price": 149.99
+            }
+          ],
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[*].isFeatured": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[*].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get order details",
+      "providerStates": [
+        {
+          "name": "order with id 1 exists for user"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/orders/1"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "billingAddress": {
+              "address1": "123 Main St",
+              "city": "New York",
+              "country": "US",
+              "firstName": "John",
+              "lastName": "Doe",
+              "postalCode": "10001",
+              "state": "NY"
+            },
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "id": 1,
+            "items": [
+              {
+                "id": 1,
+                "price": 99.99,
+                "product": {
+                  "id": 1,
+                  "images": [
+                    {
+                      "url": "/uploads/product.jpg"
+                    }
+                  ],
+                  "name": "Sample Product",
+                  "slug": "sample-product"
+                },
+                "productId": 1,
+                "quantity": 2
+              }
+            ],
+            "notes": "Please leave at door",
+            "orderNumber": "ORD-2024-001",
+            "paymentMethod": "CREDIT_CARD",
+            "paymentStatus": "PAID",
+            "shippingAddress": {
+              "address1": "123 Main St",
+              "address2": "Apt 4B",
+              "city": "New York",
+              "country": "US",
+              "firstName": "John",
+              "lastName": "Doe",
+              "phone": "555-1234",
+              "postalCode": "10001",
+              "state": "NY"
+            },
+            "shippingCost": 9.99,
+            "status": "PROCESSING",
+            "subtotal": 199.98,
+            "tax": 16,
+            "total": 225.97,
+            "trackingNumber": "1Z999AA10123456784",
+            "updatedAt": "2024-01-02T00:00:00.000Z"
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.billingAddress.address1": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.city": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.country": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.postalCode": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.billingAddress.state": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.images": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].product.images[*].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].product.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.notes": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orderNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.paymentMethod": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.paymentStatus": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.address1": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.address2": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.city": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.country": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.phone": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.postalCode": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingAddress.state": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.shippingCost": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.tax": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.trackingNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.updatedAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get product by id",
+      "providerStates": [
+        {
+          "name": "product with id 1 exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products/1"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "category": {
+              "id": 1,
+              "name": "Laptops",
+              "slug": "laptops"
+            },
+            "compareAtPrice": 1499.99,
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "description": "High-performance laptop for professionals",
+            "id": 1,
+            "images": [
+              {
+                "alt": "Premium Laptop",
+                "id": 1,
+                "isPrimary": true,
+                "url": "/uploads/laptop.jpg"
+              }
+            ],
+            "isActive": true,
+            "name": "Premium Laptop",
+            "price": 1299.99,
+            "sku": "LAP-001",
+            "slug": "premium-laptop",
+            "stock": 50,
+            "updatedAt": "2024-01-01T00:00:00.000Z",
+            "variants": [
+              {
+                "id": 1,
+                "name": "16GB RAM",
+                "price": 1399.99,
+                "sku": "LAP-001-16GB",
+                "stock": 25
+              }
+            ]
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.category.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.category.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.category.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.compareAtPrice": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.images": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.images[*].alt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.images[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.images[*].isPrimary": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.images[*].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.isActive": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.sku": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.stock": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.updatedAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.variants": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.variants[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.variants[*].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.variants[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.variants[*].sku": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.variants[*].stock": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to get product by slug",
+      "providerStates": [
+        {
+          "name": "product with slug premium-laptop exists"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products/slug/premium-laptop"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "description": "High-performance laptop",
+            "id": 1,
+            "isActive": true,
+            "name": "Premium Laptop",
+            "price": 1299.99,
+            "slug": "premium-laptop"
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.isActive": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to list orders",
+      "providerStates": [
+        {
+          "name": "user has existing orders"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "GET",
+        "path": "/api/v1/orders"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "orders": [
+              {
+                "createdAt": "2024-01-01T00:00:00.000Z",
+                "id": 1,
+                "itemCount": 2,
+                "items": [
+                  {
+                    "id": 1,
+                    "price": 99.99,
+                    "product": {
+                      "id": 1,
+                      "images": [
+                        {
+                          "url": "/uploads/product.jpg"
+                        }
+                      ],
+                      "name": "Sample Product"
+                    },
+                    "productId": 1,
+                    "quantity": 1
+                  }
+                ],
+                "orderNumber": "ORD-2024-001",
+                "shippingAddress": {
+                  "address1": "123 Main St",
+                  "city": "New York",
+                  "country": "US",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "postalCode": "10001",
+                  "state": "NY"
+                },
+                "shippingCost": 9.99,
+                "status": "PENDING",
+                "subtotal": 199.98,
+                "tax": 16,
+                "total": 225.97
+              }
+            ],
+            "pagination": {
+              "limit": 10,
+              "page": 1,
+              "total": 5,
+              "totalPages": 1
+            }
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.orders": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.orders[*].createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].product.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].product.images": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].product.images[*].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].product.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].orderNumber": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.address1": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.city": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.country": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.postalCode": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingAddress.state": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].shippingCost": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "PENDING|PROCESSING|SHIPPED|DELIVERED|CANCELLED"
+                }
+              ]
+            },
+            "$.data.orders[*].subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].tax": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.orders[*].total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.limit": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.totalPages": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to list products",
+      "providerStates": [
+        {
+          "name": "products exist in database"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products",
+        "query": {
+          "limit": [
+            "10"
+          ],
+          "page": [
+            "1"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "data": {
+            "pagination": {
+              "limit": 10,
+              "page": 1,
+              "total": 100,
+              "totalPages": 10
+            },
+            "products": [
+              {
+                "category": {
+                  "id": 1,
+                  "name": "Electronics",
+                  "slug": "electronics"
+                },
+                "compareAtPrice": 129.99,
+                "createdAt": "2024-01-01T00:00:00.000Z",
+                "description": "Product description",
+                "id": 1,
+                "images": [
+                  {
+                    "alt": "Product image",
+                    "id": 1,
+                    "isPrimary": true,
+                    "url": "/uploads/product-image.jpg"
+                  }
+                ],
+                "isActive": true,
+                "name": "Sample Product",
+                "price": 99.99,
+                "sku": "SKU-001",
+                "slug": "sample-product",
+                "stock": 100,
+                "updatedAt": "2024-01-01T00:00:00.000Z"
+              }
+            ]
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.pagination.limit": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.totalPages": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.products[*].category.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].category.name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].category.slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].compareAtPrice": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].description": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].images": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.products[*].images[*].alt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].images[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].images[*].isPrimary": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].images[*].url": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].isActive": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].sku": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].slug": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].stock": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].updatedAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to login",
+      "providerStates": [
+        {
+          "name": "user exists with email user@example.com"
+        }
+      ],
+      "request": {
+        "body": {
+          "email": "user@example.com",
+          "password": "SecureP@ss123"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/login"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "token": "jwt-token-string",
+            "user": {
+              "email": "user@example.com",
+              "firstName": "John",
+              "id": 1,
+              "lastName": "Doe",
+              "role": "USER"
+            }
+          },
+          "message": "Login successful",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.token": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to logout",
+      "providerStates": [
+        {
+          "name": "user is logged in"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/api/v1/auth/logout"
+      },
+      "response": {
+        "body": {
+          "message": "Logged out successfully",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to register a new user",
+      "providerStates": [
+        {
+          "name": "no user exists with email user@example.com"
+        }
+      ],
+      "request": {
+        "body": {
+          "email": "user@example.com",
+          "firstName": "John",
+          "lastName": "Doe",
+          "password": "SecureP@ss123"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/register"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "token": "jwt-token-string",
+            "user": {
+              "createdAt": "2024-01-01T00:00:00.000Z",
+              "email": "user@example.com",
+              "firstName": "John",
+              "id": 1,
+              "isActive": true,
+              "lastName": "Doe",
+              "role": "USER"
+            }
+          },
+          "message": "Registration successful",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.token": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.createdAt": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.email": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.firstName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.isActive": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.lastName": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.user.role": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 201
+      }
+    },
+    {
+      "description": "a request to remove cart item",
+      "providerStates": [
+        {
+          "name": "cart has item with id 1"
+        }
+      ],
+      "request": {
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token"
+        },
+        "method": "DELETE",
+        "path": "/api/v1/cart/items/1"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "id": 1,
+            "itemCount": 0,
+            "items": [],
+            "subtotal": 0
+          },
+          "message": "Item removed from cart",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to search products",
+      "providerStates": [
+        {
+          "name": "products with keyword laptop exist"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/products",
+        "query": {
+          "search": [
+            "laptop"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "data": {
+            "pagination": {
+              "limit": 10,
+              "page": 1,
+              "total": 5,
+              "totalPages": 1
+            },
+            "products": [
+              {
+                "id": 1,
+                "name": "Laptop Pro",
+                "price": 999.99
+              }
+            ]
+          },
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.pagination.limit": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.total": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.pagination.totalPages": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.products[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].name": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.products[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request to update cart item",
+      "providerStates": [
+        {
+          "name": "cart item with id 1 exists"
+        }
+      ],
+      "request": {
+        "body": {
+          "quantity": 3
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "PUT",
+        "path": "/api/v1/cart/items/1"
+      },
+      "response": {
+        "body": {
+          "data": {
+            "id": 1,
+            "itemCount": 3,
+            "items": [
+              {
+                "id": 1,
+                "price": 99.99,
+                "productId": 1,
+                "quantity": 3
+              }
+            ],
+            "subtotal": 299.97
+          },
+          "message": "Cart updated",
+          "success": true
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data.id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.itemCount": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data.items[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].price": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].productId": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.items[*].quantity": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data.subtotal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.message": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "a request with invalid quantity",
+      "providerStates": [
+        {
+          "name": "validation will fail for quantity"
+        }
+      ],
+      "request": {
+        "body": {
+          "productId": 1,
+          "quantity": -1
+        },
+        "headers": {
+          "Authorization": "Bearer valid-jwt-token",
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/cart/items"
+      },
+      "response": {
+        "body": {
+          "details": [
+            {
+              "field": "quantity",
+              "message": "Quantity must be positive"
+            }
+          ],
+          "error": "Validation error",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.details": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 400
+      }
+    },
+    {
+      "description": "a request with invalid registration data",
+      "providerStates": [
+        {
+          "name": "validation will fail"
+        }
+      ],
+      "request": {
+        "body": {
+          "email": "invalid-email",
+          "password": "123"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/register"
+      },
+      "response": {
+        "body": {
+          "details": [
+            {
+              "field": "email",
+              "message": "Invalid email"
+            }
+          ],
+          "error": "Validation error",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.details": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 400
+      }
+    },
+    {
+      "description": "a request with wrong password",
+      "providerStates": [
+        {
+          "name": "user credentials are invalid"
+        }
+      ],
+      "request": {
+        "body": {
+          "email": "user@example.com",
+          "password": "wrongpassword"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/login"
+      },
+      "response": {
+        "body": {
+          "error": "Invalid credentials",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 401
+      }
+    },
+    {
+      "description": "a request without auth token",
+      "providerStates": [
+        {
+          "name": "user is not authenticated"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/auth/me"
+      },
+      "response": {
+        "body": {
+          "error": "Unauthorized",
+          "success": false
+        },
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          }
+        },
+        "status": 401
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "16.0.4"
+    },
+    "pactRust": {
+      "ffi": "0.4.28",
+      "models": "1.3.5"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "ecom-api"
+  }
+}
