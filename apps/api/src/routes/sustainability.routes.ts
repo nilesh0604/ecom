@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as sustainabilityController from '../controllers/sustainability.controller';
-import { authenticate, optionalAuth, requireAdmin } from '../middleware/auth';
+import { authenticate, optionalAuth, adminOnly } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -63,21 +63,21 @@ router.get('/pledge', authenticate, sustainabilityController.getPledgeStatus);
 router.get(
   '/admin/repairs',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   sustainabilityController.adminGetRepairs
 );
 
 router.patch(
   '/admin/repairs/:requestId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   sustainabilityController.adminUpdateRepair
 );
 
 router.post(
   '/admin/products/:productId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   sustainabilityController.adminSetProductSustainability
 );
 

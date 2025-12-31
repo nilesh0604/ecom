@@ -24,7 +24,7 @@ import {
     unpublishArticle,
     updateArticle,
 } from '../controllers/content.controller';
-import { authenticate, requireRole } from '../middleware/auth.middleware';
+import { authenticate, authorize } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -79,14 +79,14 @@ router.get('/products/:productId/articles', getArticlesForProduct);
  * @desc Get all articles with filters (admin view)
  * @access Admin/Editor
  */
-router.get('/articles', authenticate, requireRole(['admin', 'editor']), getArticles);
+router.get('/articles', authenticate, authorize('admin', 'editor'), getArticles);
 
 /**
  * @route GET /api/v1/content/articles/:id
  * @desc Get article by ID (admin view)
  * @access Admin/Editor
  */
-router.get('/articles/:id', authenticate, requireRole(['admin', 'editor']), getArticleById);
+router.get('/articles/:id', authenticate, authorize('admin', 'editor'), getArticleById);
 
 /**
  * @route GET /api/v1/content/articles/:id/related
@@ -100,55 +100,55 @@ router.get('/articles/:id/related', getRelatedArticles);
  * @desc Create a new article
  * @access Admin/Editor
  */
-router.post('/articles', authenticate, requireRole(['admin', 'editor']), createArticle);
+router.post('/articles', authenticate, authorize('admin', 'editor'), createArticle);
 
 /**
  * @route PUT /api/v1/content/articles/:id
  * @desc Update an article
  * @access Admin/Editor
  */
-router.put('/articles/:id', authenticate, requireRole(['admin', 'editor']), updateArticle);
+router.put('/articles/:id', authenticate, authorize('admin', 'editor'), updateArticle);
 
 /**
  * @route DELETE /api/v1/content/articles/:id
  * @desc Delete an article
  * @access Admin
  */
-router.delete('/articles/:id', authenticate, requireRole(['admin']), deleteArticle);
+router.delete('/articles/:id', authenticate, authorize('admin'), deleteArticle);
 
 /**
  * @route POST /api/v1/content/articles/:id/publish
  * @desc Publish an article
  * @access Admin/Editor
  */
-router.post('/articles/:id/publish', authenticate, requireRole(['admin', 'editor']), publishArticle);
+router.post('/articles/:id/publish', authenticate, authorize('admin', 'editor'), publishArticle);
 
 /**
  * @route POST /api/v1/content/articles/:id/unpublish
  * @desc Unpublish an article
  * @access Admin/Editor
  */
-router.post('/articles/:id/unpublish', authenticate, requireRole(['admin', 'editor']), unpublishArticle);
+router.post('/articles/:id/unpublish', authenticate, authorize('admin', 'editor'), unpublishArticle);
 
 /**
  * @route POST /api/v1/content/articles/:id/toggle-featured
  * @desc Toggle featured status
  * @access Admin
  */
-router.post('/articles/:id/toggle-featured', authenticate, requireRole(['admin']), toggleFeatured);
+router.post('/articles/:id/toggle-featured', authenticate, authorize('admin'), toggleFeatured);
 
 /**
  * @route POST /api/v1/content/categories
  * @desc Create a content category
  * @access Admin
  */
-router.post('/categories', authenticate, requireRole(['admin']), createCategory);
+router.post('/categories', authenticate, authorize('admin'), createCategory);
 
 /**
  * @route GET /api/v1/content/analytics
  * @desc Get content analytics
  * @access Admin/Editor
  */
-router.get('/analytics', authenticate, requireRole(['admin', 'editor']), getContentAnalytics);
+router.get('/analytics', authenticate, authorize('admin', 'editor'), getContentAnalytics);
 
 export default router;

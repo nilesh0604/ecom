@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as ugcController from '../controllers/ugc.controller';
-import { authenticate, requireAdmin } from '../middleware/auth';
+import { authenticate, authorize('admin') } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -48,31 +48,31 @@ router.get('/prompt-eligible', authenticate, ugcController.getPromptEligibleOrde
 // ============================================================================
 
 // Get moderation queue
-router.get('/admin/queue', authenticate, requireAdmin, ugcController.getModerationQueue);
+router.get('/admin/queue', authenticate, authorize('admin'), ugcController.getModerationQueue);
 
 // Moderate content
 router.post(
   '/admin/moderate/:contentId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   ugcController.moderateContent
 );
 
 // Bulk moderate
-router.post('/admin/bulk-moderate', authenticate, requireAdmin, ugcController.bulkModerate);
+router.post('/admin/bulk-moderate', authenticate, authorize('admin'), ugcController.bulkModerate);
 
 // Toggle featured
 router.patch(
   '/admin/:contentId/feature',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   ugcController.toggleFeatured
 );
 
 // Import social content
-router.post('/admin/import-social', authenticate, requireAdmin, ugcController.importSocialContent);
+router.post('/admin/import-social', authenticate, authorize('admin'), ugcController.importSocialContent);
 
 // Get stats
-router.get('/admin/stats', authenticate, requireAdmin, ugcController.getStats);
+router.get('/admin/stats', authenticate, authorize('admin'), ugcController.getStats);
 
 export default router;

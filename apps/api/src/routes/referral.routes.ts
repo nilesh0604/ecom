@@ -6,7 +6,7 @@
 
 import { Router } from 'express';
 import * as referralController from '../controllers/referral.controller';
-import { authenticate, optionalAuth, requireAdmin } from '../middleware/auth.middleware';
+import { authenticate, optionalAuth, adminOnly } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -60,7 +60,7 @@ router.post('/webhook/purchase', referralController.handlePurchase);
 router.post(
   '/admin/process-reward/:referralId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   referralController.adminProcessReward
 );
 

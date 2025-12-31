@@ -6,7 +6,7 @@
 
 import { Router } from 'express';
 import * as loyaltyController from '../controllers/loyalty.controller';
-import { authenticate, requireAdmin } from '../middleware/auth.middleware';
+import { authenticate, authorize('admin') } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -44,7 +44,7 @@ router.post('/redeem', authenticate, loyaltyController.redeemPoints);
 router.post(
   '/admin/adjust',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   loyaltyController.adminAdjustPoints
 );
 
@@ -52,7 +52,7 @@ router.post(
 router.post(
   '/admin/process-expirations',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   loyaltyController.adminProcessExpirations
 );
 
@@ -60,7 +60,7 @@ router.post(
 router.post(
   '/admin/award-birthday',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   loyaltyController.adminAwardBirthday
 );
 

@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as customizationController from '../controllers/customization.controller';
-import { authenticate, requireAdmin } from '../middleware/auth';
+import { authenticate, authorize } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -49,28 +49,28 @@ router.post('/preview', customizationController.generatePreview);
 router.post(
   '/admin/products/:productId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   customizationController.adminCreateCustomization
 );
 
 router.post(
   '/admin/options',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   customizationController.adminAddOption
 );
 
 router.patch(
   '/admin/options/:optionId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   customizationController.adminUpdateOption
 );
 
 router.get(
   '/admin/stats',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   customizationController.adminGetStats
 );
 

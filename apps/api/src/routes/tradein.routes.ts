@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as tradeinController from '../controllers/tradein.controller';
-import { authenticate, requireAdmin } from '../middleware/auth';
+import { authenticate, authorize('admin') } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -49,63 +49,63 @@ router.patch(
 router.get(
   '/admin/requests',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminGetRequests
 );
 
 router.get(
   '/admin/stats',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminGetStats
 );
 
 router.patch(
   '/admin/requests/:requestId/approve',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminApprove
 );
 
 router.patch(
   '/admin/requests/:requestId/receive',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminReceive
 );
 
 router.patch(
   '/admin/requests/:requestId/inspect',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminInspect
 );
 
 router.patch(
   '/admin/requests/:requestId/complete',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminComplete
 );
 
 router.patch(
   '/admin/requests/:requestId/reject',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminReject
 );
 
 router.post(
   '/admin/products',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminCreateProduct
 );
 
 router.patch(
   '/admin/products/:productId',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   tradeinController.adminUpdateProduct
 );
 

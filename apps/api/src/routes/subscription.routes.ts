@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as subscriptionController from '../controllers/subscription.controller';
-import { authenticate, requireAdmin } from '../middleware/auth';
+import { authenticate, authorize('admin') } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -72,14 +72,14 @@ router.delete(
 router.get(
   '/admin/stats',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   subscriptionController.getStats
 );
 
 router.post(
   '/admin/process',
   authenticate,
-  requireAdmin,
+  authorize('admin'),
   subscriptionController.processDueSubscriptions
 );
 

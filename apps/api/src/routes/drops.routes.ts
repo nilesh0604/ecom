@@ -7,7 +7,7 @@
 
 import { Router } from 'express';
 import * as dropsController from '../controllers/drops.controller';
-import { authenticate, optionalAuth, requireAdmin } from '../middleware/auth';
+import { authenticate, optionalAuth, adminOnly } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -58,18 +58,18 @@ router.delete('/:dropId/notify', authenticate, dropsController.unsubscribeFromNo
 // ============================================================================
 
 // Create drop
-router.post('/', authenticate, requireAdmin, dropsController.createDrop);
+router.post('/', authenticate, authorize('admin'), dropsController.createDrop);
 
 // Update drop status
-router.patch('/:dropId/status', authenticate, requireAdmin, dropsController.updateDropStatus);
+router.patch('/:dropId/status', authenticate, authorize('admin'), dropsController.updateDropStatus);
 
 // Run draw
-router.post('/:dropId/run-draw', authenticate, requireAdmin, dropsController.runDraw);
+router.post('/:dropId/run-draw', authenticate, authorize('admin'), dropsController.runDraw);
 
 // Send notifications
-router.post('/:dropId/send-notifications', authenticate, requireAdmin, dropsController.sendNotifications);
+router.post('/:dropId/send-notifications', authenticate, authorize('admin'), dropsController.sendNotifications);
 
 // Get stats
-router.get('/admin/stats', authenticate, requireAdmin, dropsController.getStats);
+router.get('/admin/stats', authenticate, authorize('admin'), dropsController.getStats);
 
 export default router;
